@@ -13,7 +13,7 @@ import { MemoryRouter, Link, Route,  } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
     root: {
         display: "flex",
-        backgroundColor: "#fff",
+        //backgroundColor: "#fff",
         Height: "40px",
         marginTop: theme.spacing(1.5),
         padding: "10px 20px",
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyItems: "center",
         textDecoration: "none",
-        color: theme.palette.secondary
+        color: theme.palette.secondary.light
     }
 }))
 

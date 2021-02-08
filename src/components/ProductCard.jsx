@@ -10,6 +10,8 @@ import {
   CardActionArea 
 } from "@material-ui/core";
 
+import { Link } from 'react-router-dom'
+
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import PanoramaFishEyeTwoToneIcon from '@material-ui/icons/PanoramaFishEyeTwoTone';
 
@@ -61,19 +63,23 @@ const ProductCard = () => {
 
   const classes = useStyles();
   return (
-    <Card classes={classes.root}>
+    <Card className={classes.rooot}>
       <div className={classes.wrapper}>
         <div className={classes.media}>
-          <img src={image} alt="5" />
+          <CardActionArea className="focus:outline-none">
+            <Link to={`/product/${"1"}`}> <img src={image} alt="5" /> </Link>
+          </CardActionArea>
         </div>
         <div className={classes.content}>
               <CardActionArea className="focus:outline-none">
+                    <Link to={`/product/${"1"}`}>
                     <div className="flex flex-grow flex-col p-2 pl-3">
                         <Typography variant="h5">
                             Lizard 
                         </Typography>
                         <Typography variant="subtitle1" className="mb-2">$199</Typography>
                     </div>
+                    </Link>
               </CardActionArea>
           <div className={classes.btn}>
             <IconButton className="focus:outline-none">

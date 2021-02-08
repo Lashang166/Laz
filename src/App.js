@@ -17,6 +17,18 @@ const theme = createMuiTheme({
       dark: '#0a0d4c',
       contrastText: '#fff',
     },
+    third: {
+      light: '#ffc744',
+      main: '#ffb916',
+      dark: '#b2810f',
+      contrastText: '#fff',
+    },
+    ford: {
+      light: '#47afc5',
+      main: '#1a9cb7',
+      dark: '#126d80',
+      contrastText: '#fff',
+    },
     background: {
       default: "#eff0f5"
     }

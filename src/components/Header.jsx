@@ -1,10 +1,12 @@
+import React, {useState} from 'react'
 import { 
         Container, 
         Grid, 
         makeStyles, 
         InputBase, 
         IconButton,
-        Badge} from "@material-ui/core";
+        Badge,
+        Modal} from "@material-ui/core";
 
 import { Link } from 'react-router-dom'
 
@@ -19,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
     background: "#fff",
     color: "#9e9e9e",
     minHeight: "80px",
-    paddingTop: "5px"
+    paddingTop: "5px",
+    borderBottom: "1px solid lightgray"
   },
   search: {
       background: "#eff0f5",
@@ -43,8 +46,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+
+
+
 export const Header = () => {
   const classes = useStyles();
+
 
   return (
     <div className={classes.root}>
@@ -91,10 +98,12 @@ export const Header = () => {
                       <NotificationsOutlinedIcon color="secondary" style={{fontSize: "28px"}}/>
                   </Badge>
               </IconButton>
-              <IconButton>
-                  <Badge color="secondary">
-                      <AccountCircleOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
-                  </Badge>
+              <IconButton >
+                  <Link to="/user/login">
+                    <Badge color="secondary">
+                        <AccountCircleOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
+                    </Badge>
+                  </Link>
               </IconButton>
           </Grid>
         </Grid>

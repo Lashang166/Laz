@@ -7,9 +7,9 @@ module.exports = {
       lg: '1280px',
       xl: '1920px',
     },
-    colors: {
-      primary: "#e96a34"
-    },
+    // colors: {
+    //   primary: "#e96a34"
+    // },
     extend: {},
   },
   variants: {

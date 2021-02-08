@@ -8,7 +8,7 @@ import PanoramaFishEyeTwoToneIcon from '@material-ui/icons/PanoramaFishEyeTwoTon
 
 const useStyles = makeStyles((theme) => ({
     filter: {
-        paddingTop: "15px",
+        paddingTop: "5px",
         fontSize: "1rem"
     }
 }))
@@ -20,9 +20,6 @@ const FilterBlog = ({title, lists, shap}) => {
 
     return (
         <div className={classes.filter}>
-            <Typography variant="h6" color="initial">
-                {title}
-            </Typography>
             <FormGroup>
             {
                 lists.map((title, i) => (
