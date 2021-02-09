@@ -8,32 +8,24 @@ import {
     ListItem, 
     ListItemIcon, 
     ListItemText, 
-    Grid,
     Typography,
-    Collapse} from '@material-ui/core'
+    } from '@material-ui/core'
 
 import IconButton from '@material-ui/core/IconButton';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { Route, Link } from 'react-router-dom';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
 import LocalMallIcon from '@material-ui/icons/LocalMall';
-import CreateIcon from '@material-ui/icons/Create';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         background: "#272a34",
         color: "#fff",
-        width: "22%",
-        minWidth: 250,
+        //width: "22%",
+        minWidth: 350,
         minHeight: "100vh",
         height: "100%"
 
@@ -43,9 +35,9 @@ const useStyles = makeStyles((theme) => ({
 const menu = [
     {
         id: 0,
-        label: "ราบงาน",
+        label: "รายงาน",
         icon: <EqualizerIcon />,
-        path: "/user/dashboard/infomation"
+        path: "/admin/"
     },
     {
         id: 1,
@@ -63,7 +55,7 @@ const menu = [
         id: 3,
         label: "รายการสั่งสินค้า",
         icon: <AirplanemodeActiveIcon />,
-        path: "/user/dashboard/whichlist"
+        path: "/admin/ordermanager"
     }
 ]
 

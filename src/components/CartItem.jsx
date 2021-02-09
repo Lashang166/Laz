@@ -1,7 +1,6 @@
-
 import React from 'react'
 
-const CreateProduct = () => {
+const CartItem = () => {
     return (
         <div>
             
@@ -9,4 +8,4 @@ const CreateProduct = () => {
     )
 }
 
-export default CreateProduct
+export default CartItem

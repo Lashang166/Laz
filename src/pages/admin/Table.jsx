@@ -25,7 +25,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import CreateIcon from '@material-ui/icons/Create';
 
 
-function TableStyle() {
+function TableStyle({ topic, rows, headCells }) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -89,7 +89,7 @@ function TableStyle() {
     return (
         <div className={classes.root}>
           <Paper className={classes.paper}>
-            <EnhancedTableToolbar numSelected={selected.length} />
+            <EnhancedTableToolbar topic={topic} numSelected={selected.length} />
             <TableContainer>
               <Table
                 className={classes.table}
@@ -98,6 +98,7 @@ function TableStyle() {
                 aria-label="enhanced table"
               >
                 <EnhancedTableHead
+                  headCells={headCells}
                   classes={classes}
                   numSelected={selected.length}
                   order={order}
@@ -166,35 +167,35 @@ function TableStyle() {
       );
 }
 
-function createData(name, Brand, Stock, Rating, Sales, Price) {
-    return { name, Brand, Stock, Rating, Sales, Price };
-  }
+// function createData(name, Brand, Stock, Rating, Sales, Price) {
+//     return { name, Brand, Stock, Rating, Sales, Price };
+//   }
 
-const rows = [
-    createData('Cupcake', "adidas", 10, 3.5, 0, 200),
-    createData('Donut', "452", 25, 3.5, 0, 200),
-    createData('Eclair', "Nike", 16, 3.5, 0, 200),
-    createData('Frozen yoghurt', "Hoya", 3.5, 24, 0, 200),
-    createData('Gingerbread', "univers", 3.5, 49, 0, 200),
-    createData('Honeycomb', "adidas", 3, 3.5, 6.5, 200),
-    createData('Ice cream sandwich', "uniqo", 9.0, 3.5, 0, 200),
-    createData('Jelly Bean', "uniqo", 10, 3.5, 0, 200),
-    createData('KitKat', "Nike", 26, 3.5, 0, 200),
-    createData('Lollipop', "Hoya", 2, 3.5, 0, 200),
-    createData('Marshmallow', "Nike", 0, 81, 0, 200),
-    createData('Nougat', "adidas", 19, 3.5, 30, 200),
-    createData('Oreo', "adidas", 18, 3.5, 0, 200),
-]
+// const rows = [
+//     createData('Cupcake', "adidas", 10, 3.5, 0, 200),
+//     createData('Donut', "452", 25, 3.5, 0, 200),
+//     createData('Eclair', "Nike", 16, 3.5, 0, 200),
+//     createData('Frozen yoghurt', "Hoya", 3.5, 24, 0, 200),
+//     createData('Gingerbread', "univers", 3.5, 49, 0, 200),
+//     createData('Honeycomb', "adidas", 3, 3.5, 6.5, 200),
+//     createData('Ice cream sandwich', "uniqo", 9.0, 3.5, 0, 200),
+//     createData('Jelly Bean', "uniqo", 10, 3.5, 0, 200),
+//     createData('KitKat', "Nike", 26, 3.5, 0, 200),
+//     createData('Lollipop', "Hoya", 2, 3.5, 0, 200),
+//     createData('Marshmallow', "Nike", 0, 81, 0, 200),
+//     createData('Nougat', "adidas", 19, 3.5, 30, 200),
+//     createData('Oreo', "adidas", 18, 3.5, 0, 200),
+// ]
 
-const headCells = [
-    { id: 'name', numeric: false, disablePadding: true, label: 'Product' },
-    { id: 'Brand', numeric: false, disablePadding: true, label: 'Brand' },
-    { id: 'Stock', numeric: false, disablePadding: true, label: 'in Stock' },
-    { id: 'Rating', numeric: false, disablePadding: true, label: 'Rating' },
-    { id: 'Sales', numeric: false, disablePadding: true, label: 'Sales' },
-    { id: 'Price', numeric: false, disablePadding: true, label: 'Price' },
+// const headCells = [
+//     { id: 'name', numeric: false, disablePadding: true, label: 'Product' },
+//     { id: 'Brand', numeric: false, disablePadding: true, label: 'Brand' },
+//     { id: 'Stock', numeric: false, disablePadding: true, label: 'in Stock' },
+//     { id: 'Rating', numeric: false, disablePadding: true, label: 'Rating' },
+//     { id: 'Sales', numeric: false, disablePadding: true, label: 'Sales' },
+//     { id: 'Price', numeric: false, disablePadding: true, label: 'Price' },
 
-]
+// ]
 
 // ------------ sort ----------------------
 function descendingComparator(a, b, orderBy) {
@@ -225,7 +226,7 @@ function descendingComparator(a, b, orderBy) {
 
 
 function EnhancedTableHead(props) {
-    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+    const { classes, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort, headCells } = props;
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
     };
@@ -317,7 +318,7 @@ const EnhancedTableToolbar = (props) => {
           </Typography>
         ) : (
           <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            สินค้า
+            {props.topic}
           </Typography>
         )}
   
@@ -374,144 +375,6 @@ EnhancedTableToolbar.propTypes = {
   }));
 
 
-function  EnhancedTable () {
-    const classes = useStyles();
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  
-    const handleRequestSort = (event, property) => {
-      const isAsc = orderBy === property && order === 'asc';
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(property);
-    };
-  
-    const handleSelectAllClick = (event) => {
-      if (event.target.checked) {
-        const newSelecteds = rows.map((n) => n.name);
-        setSelected(newSelecteds);
-        return;
-      }
-      setSelected([]);
-    };
 
-    const handleClick = (event, name) => {
-      const selectedIndex = selected.indexOf(name);
-      let newSelected = [];
-  
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, name);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1),
-        );
-      }
-  
-      setSelected(newSelected);
-    };
-  
-    const handleChangePage = (event, newPage) => {
-      setPage(newPage);
-    };
-  
-    const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(parseInt(event.target.value, 10));
-      setPage(0);
-    };
-  
-    const handleChangeDense = (event) => {
-      setDense(event.target.checked);
-    };
-  
-    const isSelected = (name) => selected.indexOf(name) !== -1;
-  
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-  
-    return (
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <EnhancedTableToolbar numSelected={selected.length} />
-          <TableContainer>
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size={dense ? 'small' : 'medium'}
-              aria-label="enhanced table"
-            >
-              <EnhancedTableHead
-                classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
-  
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, row.name)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={isItemSelected}
-                            inputProps={{ 'aria-labelledby': labelId }}
-                          />
-                        </TableCell>
-                        <TableCell component="th" id={labelId} scope="row" padding="none">
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Paper>
-        <FormControlLabel
-          control={<Switch checked={dense} onChange={handleChangeDense} />}
-          label="Dense padding"
-        />
-      </div>
-    );
-  }
 
 export default TableStyle
