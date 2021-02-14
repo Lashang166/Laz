@@ -89,9 +89,11 @@ export const Header = () => {
           </Grid>
           <Grid item >
               <IconButton>
+                <Link to="/cart">
                   <Badge color="error" badgeContent={4}>
                       <ShoppingCartOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
                   </Badge>
+                </Link>
               </IconButton>
               <IconButton>
                   <Badge color="error" badgeContent={4}>

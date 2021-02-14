@@ -31,10 +31,7 @@ const CartItem = () => {
                         <Typography variant="h6" style={{margin: "0 10px 0 0"}}>Color : </Typography>
                         <Box color="#f6685e" />
                     </div>
-                    <div className="flex my-1 w-2/4">
-                        <Typography variant="h6" style={{margin: "0 10px 0 0"}}>Color : </Typography>
-                        <Box color="#f6685e" />
-                    </div>
+                   
                 </div>
             </Paper>
         </div>
