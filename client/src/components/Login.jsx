@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
         Typography,
         FormControl,
-        TextField,
         InputAdornment,
         InputLabel,
         OutlinedInput,
@@ -11,10 +10,15 @@ import {
     } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector} from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Btn from './Button';
+
+import userActions from '../store/actions/userActions'
 
 import { Link } from 'react-router-dom'
 
@@ -29,6 +33,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { loading, user , message } = useSelector((state) => state.userLogin);
+
+    useEffect(() => {
+      if(user !== null){
+
+      }
+    },[])
 
     const [values, setValues] = React.useState({
         username: '',
@@ -48,14 +61,24 @@ const Login = () => {
         event.preventDefault();
       };
 
+      const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log("a");
+        dispatch(userActions.login(values.username, values.password))
+        
+        
+      }
+
     return (
         <div className="bg-white p-3 m-24 flex">
-            <div className="flex flex-col w-3/5 borderr border-r-1 pb-3 border-r-2 border-fuchsia-600">
+            <form onSubmit={handleSubmit} className="flex flex-col w-3/5 borderr border-r-1 pb-3 border-r-2 border-fuchsia-600">
                 <Typography className={classes.margin} variant="h5" color="initial">ยินดีต้อนรับ กรุณาเข้าสู่ระบบ</Typography>
-            
                     <FormControl className={classes.margin} variant="outlined">
                         <InputLabel>Username</InputLabel>
                         <OutlinedInput
+                            name="username"
+                            value={values.username}
+                            onChange={handleChange('username')}
                             type="text"
                             labelWidth={70}
                         />
@@ -80,8 +103,8 @@ const Login = () => {
                             labelWidth={70}
                         />
                     </FormControl>
-                    <Button  className={classes.margin} variant="outlined" color="primary">เข้าสู่ระบบ</Button>
-            </div>
+                    <Button type="submit"  className={classes.margin} variant="outlined" color="primary">เข้าสู่ระบบ</Button>
+            </form>
 
             <div className="flex flex-col w-2/5 pt-14">
                 <Link to="/user/register">

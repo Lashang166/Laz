@@ -1,7 +1,12 @@
-
+import React, { useEffect } from 'react'
 import { createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline, ThemeProvider } from '@material-ui/core/'
 import Routes from './routes';
+import {BrowserRouter as Router } from 'react-router-dom'
+
+import userActions from './store/actions/userActions'
+import { useDispatch, useSelector} from 'react-redux'
+
 
 const theme = createMuiTheme({
   palette: {
@@ -38,13 +43,21 @@ const theme = createMuiTheme({
 
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(userActions.authenticated())
+
+  }, [])
+
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <Routes />
-      </div>
-      <CssBaseline />
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <Routes />
+        </div>
+        <CssBaseline />
+      </ThemeProvider>
+    </Router>
   );
 }
 
