@@ -36,15 +36,12 @@ module.exports = {
     },
     delete: async (req, res) => {
         try {
-            if(req.user.role === "admin"){
-                const cate = await  Category.findByIdAndDelete({ _id: req.params.id })
-                res.status(202).json({
-                    message: "category successfully deleted",
-                    cate
-                })
-            }else{
-                res.status(403).json({message: { msgBody: "You'er not admin", msgError: true}})
-            }
+            const cate = await  Category.findByIdAndDelete({ _id: req.params.id })
+            res.status(202).json({
+                message: "category successfully deleted",
+                cate
+            })
+        
         } catch (error) {
             res.status(500).json({
                 status: 'fail',

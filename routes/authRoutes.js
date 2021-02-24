@@ -11,7 +11,7 @@ router.post("/register", userController.register)
 router.post("/login",auth,  userController.login)
 router.get("/logout",  userController.logout)
 router.get("/authenticated",  userController.authenticated)
-router.get("//google/redirect", google ,  userController.googleRedirect)
+router.get("/google/redirect", google ,  userController.googleRedirect)
 
 router.get('/google', passport.authenticate("google", { 
     scope: ['profile', 'email']
