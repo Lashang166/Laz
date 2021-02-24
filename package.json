@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/Lashang166/Laz.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Lashang166/Laz/issues"
   },
-  "homepage": "",
+  "homepage": "https://github.com/Lashang166/Laz#readme",
   "dependencies": {
     "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
