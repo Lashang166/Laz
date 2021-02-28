@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect} from "react";
 
 import Header from "../components/Headers";
 import FilterBlog from "../components/FilterBlog";
@@ -9,6 +9,9 @@ import {
   Chip,
 } from "@material-ui/core";
 import CardItem from "../components/CardItem";
+import { useDispatch, useSelector } from 'react-redux'
+import ProductActions from "../actions/productActions"
+
 
 const filters = [
   {
@@ -32,6 +35,15 @@ const filters = [
 ];
 
 const Shop = () => {
+  const dispatch = useDispatch()
+  const { products } = useSelector(state => state.productsState)
+  useEffect(() => {
+      if(products.length === 0){
+          dispatch(ProductActions.fetch())
+     }
+  }, [])
+
+
   return (
     <div>
       <Header />
@@ -88,15 +100,19 @@ const Shop = () => {
               </div>
               {/* ---products---- */}
               <Grid container spacing={3} className="pt-3">
-                <Grid item xs={12} md={3}>
-                  <CardItem />
-                </Grid>
-                <Grid item xs={12} lg={3} >
-                  <CardItem />
-                </Grid>
-                <Grid item xs={12}  lg={3} >
-                  <CardItem />
-                </Grid>
+               { products && products.map((item) => (
+                  //image = item.images[0]
+                  <Grid item key={item._id} xs={12} md={3}>
+                    <CardItem 
+                      title={item.title} 
+                      id={item._id} 
+                      price={item.price} 
+                      image={item.images[0].substr(item.images[0].indexOf("file"), item.images[0].length + 1)}  />
+                  </Grid>
+              
+               ))}
+
+
               </Grid>
             </Grid>
           </Grid>

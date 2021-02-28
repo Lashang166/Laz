@@ -3,8 +3,15 @@ import Header from '../components/Headers'
 import Container from '@material-ui/core/Container'
 import { Typography, Paper } from '@material-ui/core'
 import CartItem from '../components/CartItem'
+import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 const Cart = () => {
+    const dispatch = useDispatch()
+    const { cartItems, counterItems, priceCounter } = useSelector(state => state.cartState)
+
+
     return (
         <div style={{ background: "#f5f5f5"}}>
             <Header />
@@ -24,23 +31,20 @@ const Cart = () => {
                 </div>
 
                 <div className="">
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
-                    <CartItem />
+                { cartItems.map((item) => (
+                    <CartItem    item={item} />
+                ))}
                     <div className="h-32 mt-2 p-2"></div>
                 </div>
 
                 <div >
                     <Paper className="fixed px-10 py-4 flex  bg-white h-32 bottom-0 w-full">
                         <div className="w-2/4">
-                            <Typography variant="h5">ทั้งหมด 10 ชิ้น</Typography>
-                            <Typography variant="h5">รวม <span className="text-primary-200">1110</span> บาท</Typography>
+                            <Typography variant="h5">ทั้งหมด {counterItems} ชิ้น</Typography>
+                            <Typography variant="h5">รวม <span className="text-primary-200">{priceCounter}</span> บาท</Typography>
                         </div>
                         <div className="w-2/4 h-full ">
-                          <button style={{background: "#ee4d2d"}} class=" w-2/4 h-12 flex items-center justify-center rounded-md  text-white text-xl" type="submit">สั่งซื่อ</button>
+                          <Link to="/cart/checkout" style={{background: "#ee4d2d"}} className=" w-2/4 h-12 flex items-center justify-center rounded-md  text-white text-xl" type="submit">สั่งซื่อ</Link>
 
                         </div>
                     </Paper>

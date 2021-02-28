@@ -8,7 +8,7 @@ const Product = require("../models/productModel")
 module.exports = {
     add: async (req, res) => {
         if(req.isAuthenticated()){
-            const {items,  totalPrice, address,  express, isPaid, payment} = req.body
+            const {items,  totalPrice, address,  shipper, isPaid, payment} = req.body
 
             const order = new Orders({
                 userId: req.user._id,
@@ -16,7 +16,7 @@ module.exports = {
                 totalPrice,
                 address, 
                 isPaid,
-                express,
+                shipper,
                 payment
             })
 
@@ -33,7 +33,7 @@ module.exports = {
     },
     get: async (req, res) => {
         if(req.isAuthenticated()) {
-            const order = await Orders.find({userId: req.user._id}).populate("express payment items.productId userId", "name name title username")
+            const order = await Orders.find({userId: req.user._id}).populate("shipper payment items.productId userId", "name name title username")
             res.status(200).json({ order})
         }else{
             res.status(401).json({ message: "Unauthorize"})
@@ -41,7 +41,7 @@ module.exports = {
     },
     fetch: async (req, res) => {
         if(req.user.role === "admin"){
-            const orders = await Orders.find({})
+            const orders = await Orders.find({}).populate("items.productId userId shipper payment", "title username name name")
             res.status(200).json({ orders })
 
         }else{

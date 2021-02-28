@@ -5,7 +5,7 @@ const Product = require("../models/productModel");
 module.exports = {
   fetch: async (req, res) => {
       try {
-        const product = await Product.find();
+        const product = await Product.find({}).populate("category brand", "category name");
         res.status(200).json({
           product
         })

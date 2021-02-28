@@ -24,13 +24,14 @@ const UserSchema = new mongoose.Schema({
         default: "user"
     },
     thumbnail: {
-        type: String
+        type: String,
+        defult: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fjira.mariadb.org%2Fbrowse%2FMDEV-21002&psig=AOvVaw0htVGlyUUro7asy3Tp_jDc&ust=1614618890862000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOit1p2Rje8CFQAAAAAdAAAAABAE"
     },
     googleId: String
 })
 
 UserSchema.pre("save", function(next) {
-    if(!this.isModified('password')){  
+    if(!this.isModified('password')){
         return next()
     }
     bcrypt.hash(this.password, 10, (err,passwordHash) => {

@@ -11,7 +11,7 @@ const ProductSchema = new mongoose.Schema({
     rating: [{
         username: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
         rate: Number
-    }],
+    }], 
     reviews: [{ 
         type: mongoose.Schema.Types.ObjectId, ref: "Review"
     }],

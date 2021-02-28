@@ -1,4 +1,4 @@
-import React from 'react'
+import { useState, useRef } from 'react'
 
 import { 
     Container, 
@@ -7,21 +7,33 @@ import {
     InputBase, 
     IconButton,
     Badge,
-     Typography
+     Typography,
+
+     Grow,
+     Paper,
+     Popper,
+     MenuItem,
+     MenuList, 
+     List,
+     ListItem,
+     ListItemIcon,
+     ListItemText
     } from "@material-ui/core";
 
 import { Link } from 'react-router-dom'
 
 import Popover from '@material-ui/core/Popover';
+import { useSelector, useDispatch } from 'react-redux'
 
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Collapse from '@material-ui/core/Collapse';
 
-const user = {
-    iseAuthenticated: false
-}
+import userActions from '../actions/userActions'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,8 +73,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 
+
 const Headers = () => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const [menu, setMenu] = useState(false)
+    const { user, isAuthenticated } = useSelector(state => state.userState)
+    const { counterItems } = useSelector(state => state.cartState)
+
 
 
     return (
@@ -100,7 +118,7 @@ const Headers = () => {
                             
                         >
                             <Link to="/cart">
-                                <Badge color="error" badgeContent={4}>
+                                <Badge color="error" badgeContent={counterItems > 0 ? counterItems: null}>
                                     <ShoppingCartOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
                                 </Badge>
                             </Link>
@@ -108,21 +126,57 @@ const Headers = () => {
                           
 
                         </IconButton>
-                        {user.isAuthemticated ? 
+                        {isAuthenticated ? 
                             <IconButton>
                                 <Badge color="error" badgeContent={4}>
                                     <NotificationsOutlinedIcon color="secondary" style={{fontSize: "28px"}}/>
                                 </Badge>
                             </IconButton>
-                            : null
-                        }
+                             : null
+                        } 
+                        <div  className="relative text-black" onMouseOver={() => setMenu(true)} onMouseLeave={() => setMenu(false)}>
                         <IconButton >
-                            <Link to={user.isAuthenticated ? `/user/dashboard`: `/user/login`}>
+                            <Link to={`/buyer/login`}>
                                 <Badge color="secondary">
                                     <AccountCircleOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
                                 </Badge>
                             </Link>
-                        </IconButton>    
+                        </IconButton> 
+                          { isAuthenticated ? 
+                            <div className={`${menu ? "absolute" : "hidden"}  w-48  bg-white py-1 right-0 -bottoกm-20 z-10`}>
+                                <Collapse in={menu}>
+                                <List>
+                                    <ListItem button>
+                                        <Link to="/user/dashboard"  className="flex items-center ">
+                                            <ListItemIcon>
+                                                <AccountCircleOutlinedIcon color="secondary"  style={{fontSize: "28px"}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="บัญชี" />
+                                        </Link>
+                                    </ListItem>
+                                    
+                            { user.role === "admin" ? 
+                                    <ListItem button>
+                                        <Link to="/admin/report" className="flex items-center ">
+                                            <ListItemIcon>
+                                                <DashboardIcon color="secondary"  style={{fontSize: "28px"}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary="จัดการ" />
+                                        </Link>
+                                    </ListItem>
+                            : null}
+                               
+                                    <ListItem button onClick={() => { dispatch(userActions.logout())}}>
+                                        <ListItemIcon>
+                                            <ExitToAppIcon color="secondary"  style={{fontSize: "28px"}}/>
+                                        </ListItemIcon>
+                                        <ListItemText primary="ออก" />
+                                    </ListItem>
+                                </List>
+                            </Collapse>
+                            </div>   
+                            : null }
+                        </div>
                     </Grid>
 
                     
@@ -149,26 +203,3 @@ export default Headers
 
 
 
-const PopBox = ({ open, anchorEl, handlePopoverClose }) => {
-
-    return (
-        <Popover
-            id="mouse-over-popover"
-            open={open}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-            }}
-            transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-            }}
-            onClose={handlePopoverClose}
-            disableRestoreFocus
-        >
-            <p>This is Content</p>
-        </Popover>
-    )
-
-}

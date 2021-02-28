@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
 
-// import { userRegisterReducer, userLoginReducer, userAuthReducer } from './userReducers'
-// import { productReducer } from './productReducers'
+import { userReducer } from './userReducers'
+import { productReducer } from './productReducer';
+import { cartReducer } from './cartReducers'
 
 const rootReducer = combineReducers({
-    // userRegister: userRegisterReducer,
-    // userLogin: userLoginReducer,
-    // productsState: productReducer
+    userState: userReducer,
+    productsState: productReducer,
+    cartState: cartReducer
 })
 
 

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from '../components/Headers'
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import CardItem from "../components/CardItem";
+import axios from 'axios'
 import { 
         Container, 
         Grid, 
@@ -11,18 +12,14 @@ import {
         RadioGroup, 
         IconButton} from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
+
+import CartActions from '../actions/cartActions'
+import { useSelector, useDispatch } from 'react-redux'
 import Box from "../components/Box";
 
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import  IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";;
 
-
-
-const images = [
-    "https://images.unsplash.com/photo-1612490020092-e4f7a3d17dec?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-    "https://images.unsplash.com/photo-1611769864329-ef8d67d6cf78?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
-    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=334&q=80",
-  ];
 
   const useStyles = makeStyles((theme) => ({
     order: {
@@ -73,9 +70,41 @@ const images = [
 const Product = (props) => {
     const classes = useStyles();
     const id = props.match.params.id;
+    const dispatch = useDispatch()
+    const { cartItems, } = useSelector(state => state.cartState)
     const [currentImage, setCurrentImage] = useState(0);
     const [fade, setFade] = useState(true)
     const [qty, setQty] = useState(1);
+
+    const [product, setProduct] = useState(null);
+    const [images, setImages] = useState([]);
+    const [size, setSize] = useState("")
+    const [color, setColor] = useState("")
+
+
+    useEffect(() => {
+        const cancelToken = axios.CancelToken;
+        const source = cancelToken.source();
+    
+        axios
+          .get(`/api/product/get/${id}`, { cancelToken: source.token })
+          .then((res) => {
+              console.log(res.data);
+            setProduct(res.data.product);
+            // setColor(res.data.product.colors[0])
+            // setSize(res.data.product.variation[0])
+          })
+          .catch((err) => {
+            if (axios.isCancel(err)) {
+              return "axios request cancelled"
+            }
+            return err
+          });
+    
+        return () => {
+          source.cancel();
+        };
+    }, [])
 
 
 
@@ -104,20 +133,22 @@ const Product = (props) => {
     
 
     return (
-        <div>
+       product && ( <div>
             <Header />
             <Container className="bg-white mt-3">
                 <Grid container spacing={1}>
                     <Grid item lg={5}>
                     <Grid container spacing={1}>
                         <Grid item xs={2}>
-                            {images.map((img, index) => (
+                            {product.images.map((img, index) => (
                             <div
                                 className="my-1 cursor-pointer"
                                 key={index}
                                 onClick={() => setCurrentImage(index)}
                             >
-                                <img src={img} className="min-w-full " />
+                                <img 
+                                        src={`/assets//images/${img.substr(img.indexOf("file"), img.length + 1)}`}
+                                        className="min-w-full " />
                             </div>
                             ))}
                         </Grid>
@@ -132,7 +163,7 @@ const Product = (props) => {
                                 </div>
                                 <Fade in={fade}>
                                     <img
-                                        src={images[currentImage]}
+                                        src={`/assets//images/${product.images[currentImage].substr(product.images[currentImage].indexOf("file"), product.images[currentImage].length + 1)}`}
                                         alt="1"
                                         className="w-full"
                                     />
@@ -165,11 +196,11 @@ const Product = (props) => {
                         <div className="h-full px-10 lg:pb-20 flex flex-col justify-around">
                         <div>
                             <Typography variant="h4" compoent="b" color="initial">
-                              เตากระไฟฟ้า ไอรอนเชฟ
+                             { product.title }
                             </Typography>
                             <div className="flex mt-5">
                             <Typography variant="h5" compoent="b" color="primary">
-                                THB 990
+                                THB {product.price}
                             </Typography>
                             {/* <Rating name="read-only" value={3} readOnly /> */}
                             </div>
@@ -182,21 +213,16 @@ const Product = (props) => {
                             <Typography variant="h6">สี</Typography>
                             <RadioGroup>
                             <div className="flex" >
+                            {product.colors.map((s, i) => (
                                 <Radio 
-                                value="a" 
-                                icon={ <Box color="#f6685e" >ขาว</Box> } 
-                                checkedIcon={  <Box color="#f6685e" checked={true} >ขาว</Box> }
+                                    onClick={() => setColor(s)}
+                                    value={s} 
+                                    key={i}
+                                    icon={ <Box color="#f6685e" >{s}</Box> } 
+                                    checkedIcon={  <Box color="#f6685e" checked={true} >{s}</Box> }
                                 />
-                                <Radio 
-                                value="ass" 
-                                icon={ <Box color="#4dabf5" >เหลือง</Box> } 
-                                checkedIcon={  <Box color="#4dabf5" checked={true} >เหลือง</Box> }
-                                />
-                                <Radio 
-                                value="aa" 
-                                icon={ <Box color="#ffeb3b" >ฟ้า</Box> } 
-                                checkedIcon={  <Box color="#ffeb3b" checked={true} >ฟ้า</Box> }
-                                />
+                            ))}
+
                             </div>
                             </RadioGroup>
                         </div>
@@ -204,27 +230,15 @@ const Product = (props) => {
                         <Typography variant="h6">ขนาด</Typography>
                             <RadioGroup>
                             <div className="flex" >
-                                <Radio 
-                                value="s" 
-                                icon={ <Box>S</Box> } 
-                                checkedIcon={   <Box checked={true} >S</Box > }
-                                />
-                                <Radio 
-                                value="da" 
-                                icon={ <Box>L</Box> } 
-                                checkedIcon={   <Box checked={true} >L</Box > }
-                                />
-                                <Radio 
-                                value="ad" 
-                                icon={ <Box>M</Box> } 
-                                checkedIcon={   <Box checked={true} >M</Box > }
-                                />
-                                <Radio 
-                                value="add" 
-                                icon={ <Box>XL</Box> } 
-                                checkedIcon={   <Box checked={true} >XL</Box > }
-                                />
-                                
+                                {product.variation.map((s, i) => (
+                                    <Radio 
+                                        onClick={() => setSize(s)}
+                                        value={s} 
+                                        key={i}
+                                        icon={ <Box color="#f6685e" >{s}</Box> } 
+                                        checkedIcon={  <Box color="#f6685e" checked={true} >{s}</Box> }
+                                    />
+                                ))}
                             </div>
                             </RadioGroup>
                         </div>
@@ -233,7 +247,7 @@ const Product = (props) => {
                             <div className="flex">
                             <IconButton
                                 className="focus:outline-none text-xl"
-                                onClick={() => (qty == 1 ? "" : setQty(qty - 1))}
+                                onClick={() => qty !== 0 ? setQty(qty - 1) : "" }
                             >
                                 <IndeterminateCheckBoxIcon
                                 color="primary"
@@ -246,12 +260,11 @@ const Product = (props) => {
                                 id=""
                                 className="w-10 h-10 focus:outline-none text-xl mt-2 bg-gray-200 text-center"
                                 value={qty}
-                                onChange={(e) => setQty(e.target.value)}
+                                onChange={(e) => e.target.value < product.countInStock ? setQty(e.target.value) : setQty(product.countInStock)}
                             />
                             <IconButton
                                 className="focus:outline-none"
-                                onClick={() => setQty(qty + 1)}
-                            >
+                                onClick={() => qty < product.countInStock ? setQty(qty + 1) : null}                            >
                                 <AddBoxIcon
                                     color="primary"
                                     fontSize="large"
@@ -260,11 +273,23 @@ const Product = (props) => {
                             </IconButton>
                             </div>
                         </div>
+                        <div className="flex flex-col mb-3">
+                            <Typography variant="body1">จำนวนในสต็อก : {product.countInStock} ชิ้น</Typography>
+                            <Typography variant="body1">ประเภท : {product.category.category}</Typography>
+                            <Typography variant="body1">แบรนด์ : {product.brand.name}</Typography>
+                            <Typography variant="body1">ขายไปแล้ว : {product.soldCount} ชิ้น</Typography>
+                        </div>
                         <div className="flex">
-                        <button style={{background: "#ee4d2d"}} class=" w-full sm:w-1/2 flex items-center justify-center rounded-md  text-white text-xl" type="submit">Buy now</button>
-                            <IconButton className="border-3 border-black">
-                            <FavoriteBorderIcon style={{ fontSize: 30 }} />
-                            </IconButton>
+                            <button 
+                                style={{background: "#ee4d2d"}} 
+                                class=" w-full sm:w-1/2 flex items-center justify-center rounded-md  text-white text-xl" 
+                                type="submit"
+                                onClick={() => dispatch(CartActions.add(product, color, size, qty, cartItems))}
+
+                                >Buy now</button>
+                                <IconButton className="border-3 border-black">
+                                <FavoriteBorderIcon style={{ fontSize: 30 }} />
+                                </IconButton>
                         </div>
                         </div>
                     </Grid>
@@ -296,7 +321,11 @@ const Product = (props) => {
                                 className="w-full mt-4 mb-2 rounded-sm focus:outline-none p-5"
                                 placeholder="Your Review"
                                 ></textarea>
-                                <button style={{background: "#ee4d2d"}} class="w-3/4 sm:w-1/4 flex items-center justify-center rounded-md  h-10 mt-1  text-white text-xl" type="submit">Submit</button>
+                                <button 
+                                    style={{background: "#ee4d2d"}} 
+                                    class="w-3/4 sm:w-1/4 flex items-center justify-center rounded-md  h-10 mt-1  text-white text-xl" 
+                                    type="submit"
+                                    >Submit</button>
 
                             </div>
                             </div>
@@ -328,6 +357,7 @@ const Product = (props) => {
             
             </Container>
         </div>
+        )
     )
 }
 

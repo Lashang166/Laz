@@ -34,6 +34,8 @@ app.use('/api/brand', require('./routes/brandRoute'))
 app.use('/api/category', require('./routes/categoryRoute'))
 app.use('/api/payment', require('./routes/paymentRoute'))
 app.use('/api/shipper', require('./routes/shipperRoute'))
+app.use('/api/product', require('./routes/productRoute'))
+app.use('/api/order', require("./routes/orderRoute"))
 
 
 

@@ -1,8 +1,11 @@
-
+import React, { useEffect } from 'react'
 import Routes from './routes';
 import {BrowserRouter as Router } from 'react-router-dom'
 import { CssBaseline, ThemeProvider } from '@material-ui/core/'
 import { createMuiTheme, StylesProvider  } from '@material-ui/core/styles';
+import userActions from './actions/userActions'
+import { useSelector, useDispatch} from 'react-redux'
+
 
 
 const theme = createMuiTheme({
@@ -30,6 +33,14 @@ const theme = createMuiTheme({
 
 
 function App() {
+  const dispatch = useDispatch()
+  const { loading } = useSelector(state => state.userState)
+
+  useEffect(() => {
+    dispatch(userActions.auth())
+    
+  }, [])
+
   return (
     <Router>
       <StylesProvider injectFirst >
