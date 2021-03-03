@@ -19,6 +19,9 @@ import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
+import BrandingWatermarkIcon from '@material-ui/icons/BrandingWatermark';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import CategoryIcon from '@material-ui/icons/Category';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,7 +59,25 @@ const menu = [
         label: "รายการสั่งสินค้า",
         icon: <AirplanemodeActiveIcon />,
         path: "/admin/ordermanager"
-    }
+    },
+    {
+        id: 4,
+        label: "แบรนด์",
+        icon: <BrandingWatermarkIcon />,
+        path: "/admin/brandmanager"
+    },
+    {
+        id: 5,
+        label: "การจัดส่ง",
+        icon: <LocalShippingIcon />,
+        path: "/admin/shippingmanager"
+    },
+    {
+        id: 6,
+        label: "จัดการหมวดหมู่",
+        icon: <CategoryIcon />,
+        path: "/admin/categorymanager"
+    },
 ]
 
 const NavSide = () => {
